@@ -1,0 +1,21 @@
+<?php
+   $json = file_get_contents('php://input');
+   $data = json_decode($json, true);
+   
+   $result['merchantID'] = $data['Body']['stkCallback']['MerchantRequestID'];
+   $result['checkoutID'] = $data['Body']['stkCallback']['CheckoutRequestID'];
+   $result['resultCode'] = $data['Body']['stkCallback']['ResultCode'];
+   $result['resultDesc'] = $data['Body']['stkCallback']['ResultDesc'];
+   
+   if ($result['resultCode'] == 0){
+       //successful transaction
+       $result['amount'] = $data['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
+       $result['txID'] = $data['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'];
+       $result['balance'] = $data['Body']['stkCallback']['CallbackMetadata']['Item'][2]['Value'];
+       $result['date'] = $data['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'];
+       $result['number'] = $data['Body']['stkCallback']['CallbackMetadata']['Item'][4]['Value'];
+   }
+   
+   $encoded = json_encode($result);
+   file_put_contents("../../daraja.txt", $encoded."\n", FILE_APPEND);
+   ?>
