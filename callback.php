@@ -4,7 +4,7 @@ $data = json_decode($json, true);
 
 $result['success'] = true;
 
-if ($data['Body']['stkCallback']['ResultCode']; == 0)
+if ($data['Body']['stkCallback']['ResultCode'] == 0)
 {
     $result['paid'] = true;
     $result['message'] = "Payment successful";
